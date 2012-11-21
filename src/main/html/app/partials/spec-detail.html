@@ -1,0 +1,23 @@
+<div ng-controller="SpecDetailController">
+    <h1>Name: {{spec.name}} </h1>
+
+    <h2>Features:</h2>
+
+    <ul>
+        <li ng-repeat="feature in spec.features">
+            {{feature.name}}
+            <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#demo{{$index}}">
+                Details
+            </button>
+
+            <div id="demo{{$index}}" class="collapse out">
+                <ul>
+                    <li ng-repeat="block in feature.blocks">
+                        {{block.kind}}: {{block.texts}}
+                    </li>
+                </ul>
+            </div>
+
+        </li>
+    </ul>
+</div>

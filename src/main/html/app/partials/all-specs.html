@@ -1,0 +1,8 @@
+<div ng-controller="AllSpecsController">
+
+    <ul>
+        <li ng-repeat="spec in specs">
+            <a href="#/spec-detail?specId={{$index}}">{{spec.name}}</a>
+        </li>
+    </ul>
+</div>
