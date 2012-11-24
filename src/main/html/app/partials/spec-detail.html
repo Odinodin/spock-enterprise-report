@@ -1,23 +1,22 @@
-<div ng-controller="SpecDetailController">
-    <h1>Name: {{spec.name}} </h1>
+<div ng-controller="SpecDetailController" xmlns="http://www.w3.org/1999/html">
+    <h1>{{spec.name}} </h1>
 
-    <h2>Features:</h2>
+    <div class="well well-large">
+        <h2>Features</h2>
 
-    <ul>
-        <li ng-repeat="feature in spec.features">
-            {{feature.name}}
-            <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#demo{{$index}}">
-                Details
-            </button>
+        <ul>
+            <li ng-repeat="feature in spec.features">
+                {{feature.name}}
+                <button type="button" class="label label-info" data-toggle="collapse" data-target="#demo{{$index}}">+</button>
+                <div id="demo{{$index}}" class="collapse out">
+                    <ul>
+                        <li ng-repeat="block in feature.blocks">
+                            {{block.kind}} {{block.texts.join(" and ")}}
+                        </li>
+                    </ul>
+                </div>
 
-            <div id="demo{{$index}}" class="collapse out">
-                <ul>
-                    <li ng-repeat="block in feature.blocks">
-                        {{block.kind}}: {{block.texts}}
-                    </li>
-                </ul>
-            </div>
-
-        </li>
-    </ul>
+            </li>
+        </ul>
+    </div>
 </div>

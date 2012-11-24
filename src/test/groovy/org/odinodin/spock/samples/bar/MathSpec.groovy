@@ -7,7 +7,7 @@ class MathSpec extends Specification {
 
 
     def "maximum of two numbers"() {
-        expect:
+        expect: "math to actually work"
         Math.max(1, 3) == 3
         Math.max(7, 4) == 7
         Math.max(0, 0) == 0
@@ -16,7 +16,7 @@ class MathSpec extends Specification {
 
     def "improved maximum of two numbers "() {
 
-        expect:
+        expect: "math still works"
         Math.max(a, b) == c
 
         where:
@@ -40,7 +40,7 @@ class MathSpec extends Specification {
 
 
     def "failing test"() {
-        expect:
+        expect: "i fail"
         Math.max(0, 2) == 0
     }
 }

@@ -20,5 +20,34 @@ specService.factory('specService', function () {
         return this.data[index];
     };
 
+
+    sharedSpecsService.countErrors = function() {
+        return this.data.map(function (spec) { return spec.numberOfErrors }).reduce(function (prev, curr) { return prev + curr; });
+    };
+
+
+    sharedSpecsService.countTotalNumberOfTests = function() {
+        return this.data.map(function (spec) { return spec.features.length }).reduce(function (prev, curr) { return prev + curr; });
+    };
+
+
     return sharedSpecsService;
+});
+
+specService.factory('translateService', function() {
+
+    var translateService = {};
+
+    var blocks = {
+        EXPECT: "expect",
+        SETUP: "given",
+        THEN: "then",
+        WHERE: "where",
+        WHEN: "when"};
+
+    translateService.translateBlock = function (blockName) {
+        return blocks[blockName]
+    };
+
+    return translateService;
 });

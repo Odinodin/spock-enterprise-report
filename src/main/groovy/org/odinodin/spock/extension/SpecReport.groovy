@@ -6,16 +6,19 @@ import groovy.json.JsonBuilder
 import org.spockframework.runtime.model.FeatureInfo
 import org.spockframework.runtime.model.BlockInfo
 
+/**
+ * Created by odinholestandal
+ */
 class SpecReport {
 
     static createReport(SpecInfo specInfo, List<ErrorInfo> errors) {
 
-        def data = [[
+        def errorCount = errors ? errors.count {it?.exception?.message != null} : 0
 
-                        //meta: specInfo.getMetadata(),
-                        name: specInfo.getDescription()?.getTestClass()?.name,
-                        fileName: specInfo.filename,
-                        numberOfErrors: errors.size(),
+        def data = [[
+                        name: specInfo.name,
+                        fileName: specInfo.description?.testClass?.name,
+                        numberOfErrors: errorCount,
                         features: jsonifyFeatures(specInfo.features, errors)
                 ]]
 
