@@ -6,22 +6,25 @@ import org.spockframework.runtime.model.SpecInfo
 /**
  * Created by odinholestandal
  */
-class ReportWriter {
+class SingleSpecReportWriter {
+
+    static final File baseDir = new File("target/spock-enterprise-reports")
 
     static Map<Integer, List<ErrorInfo>> errorMap = [:]
 
     static void write(SpecInfo specInfo) {
-
+        println "writing specinfo for " + specInfo.name
         def buffer = new StringBuffer()
         buffer << SpecReport.createReport(specInfo, errorMap.get(specInfo.hashCode()) as List<ErrorInfo>)
 
-        def file = new File("specinfo.txt")
-        if (file.exists()) {
-            processFileInplace(file) { text ->
-                def both = text + buffer.toString()
-                both.replaceAll(/\n];\[/, ",")
-            }
-        } else file << buffer.toString()
+        writeBufferToFile(specInfo, buffer)
+    }
+
+    private static void writeBufferToFile(SpecInfo specInfo, StringBuffer buffer) {
+        def fullyQualifiedClassName = specInfo.description?.testClass?.name
+        if (!baseDir.exists()) baseDir.mkdirs()
+        def file = new File(baseDir, fullyQualifiedClassName)
+        file << buffer.toString()
     }
 
     static void write(ErrorInfo errorInfo) {
@@ -35,12 +38,4 @@ class ReportWriter {
             errorMap.put(specId, [errorInfo])
         }
     }
-
-
-    static def processFileInplace(file, Closure processText) {
-        def text = file.text
-        file.write(processText(text))
-    }
-
-
 }

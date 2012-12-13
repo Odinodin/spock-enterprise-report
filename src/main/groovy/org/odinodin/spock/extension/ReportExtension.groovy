@@ -17,12 +17,12 @@ class ReportExtension implements IGlobalExtension {
 
             @Override
             void afterSpec(SpecInfo specInfo) {
-                ReportWriter.write(specInfo)
+                SingleSpecReportWriter.write(specInfo)
             }
 
             @Override
             void error(ErrorInfo error) {
-                ReportWriter.write(error)
+                SingleSpecReportWriter.write(error)
             }
         })
     }
