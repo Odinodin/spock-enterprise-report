@@ -1,0 +1,52 @@
+<div ng-controller="AllSpecsController">
+
+    <div class="navbar">
+        <div class="navbar-inner">
+            <form class="navbar-search pull-left">
+                <input type="text" ng-model="search" class="search-query" placeholder="Search">
+            </form>
+        </div>
+    </div>
+
+
+    <div>Status:</div>
+    <div class="progress">
+        <div class="bar bar-success" style="width: {{totalSuccessPercentage}}%">{{totalSuccessCount}}</div>
+        <div class="bar bar-danger" style="width: {{totalErrorPercentage}}%">{{totalErrorCount}}</div>
+    </div>
+
+    <ul>
+        <li ng-repeat="spec in specs | filter:search">
+            <div ng-class="{true:'text-error', false:'text-info'}[spec.numberOfErrors > 0]">{{spec.fileName}}
+
+                <button type="button" class="label label-info" data-toggle="collapse" data-target="#spec{{$index}}">+
+                </button>
+            </div>
+            <div id="spec{{$index}}" class="collapse out">
+                <div class="well">
+                    <ul>
+                        <li ng-repeat="feature in spec.features">
+                            <div ng-class="{true:'text-error', false:'text-info'}[feature.error != null]">
+                                <span ng-show="feature.error != null" class="badge badge-important">x</span>
+                                {{feature.name}}
+                                <button type="button" class="label label-info" data-toggle="collapse"
+                                        data-target="#feature{{$parent.$index}}-{{$index}}">+
+                                </button>
+                            </div>
+                            <div id="feature{{$parent.$index}}-{{$index}}" class="collapse out">
+                                <ul class="unstyled">
+                                    <li ng-repeat="block in feature.blocks">
+                                        <strong>{{translateBlock(block.kind)}}</strong> {{block.texts.join(" and ")}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+
+
