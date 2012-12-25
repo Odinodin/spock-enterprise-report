@@ -13,33 +13,32 @@ public class SpockReportMojo extends GroovyMojo {
     /**
      * Where to unzip the report
      *
-     * @parameter default-value="target/spock"
+     * @parameter default-value="target/spock-enterprise-report"
      */
-    private String destination
+    private String reportDir
 
     /**
      * Where to find the reports from each spec that was run
      *
      * @parameter default-value="target/spock-data"
      */
-    private String singleReportDir
+    private String inputDir
 
     void execute() {
-        log.info("Writing Spock Enterprise HTML-report to $destination")
+        log.info("Writing Spock Enterprise HTML-report to $reportDir")
         unzipHtml()
-
         gatherReportData()
     }
 
     void gatherReportData() {
-        def reportsDir = new File(singleReportDir)
-        if (!reportsDir.isDirectory()) throw new RuntimeException("Could not find Spock reports in $singleReportDir. Make sure to run a report first.")
+        def inputSingleReportDir = new File(inputDir)
+        if (!inputSingleReportDir.isDirectory()) throw new RuntimeException("Could not find Spock reports in $inputDir. Make sure to run a report first.")
 
-        // Create report-file and copy it to the correct destination
+        // Create report-file and copy it to the correct reportDir
 
         def buffer = new StringBuffer()
 
-        reportsDir.eachFile { file ->
+        inputSingleReportDir.eachFile { file ->
             file.eachLine { line ->
                 if (isLastLine(line) ){
                     buffer << ","
@@ -49,8 +48,12 @@ public class SpockReportMojo extends GroovyMojo {
             }
         }
 
-        def report = new File(reportsDir, "data.js")
-        report << buffer.toString()
+        writeReportFile(buffer.toString());
+    }
+
+    private void writeReportFile(def reportString) {
+        def report = new File("$reportDir/html/app/js", "data.js")
+        report << "var globalSpecs = $reportString";
     }
 
     private boolean isLastLine(String line) {
@@ -62,7 +65,7 @@ public class SpockReportMojo extends GroovyMojo {
         InputStream inputStream = getClass().getResourceAsStream("html.zip");
 
         def result = new ZipInputStream(inputStream)
-        def destFile = new File(destination)
+        def destFile = new File(reportDir)
         if (!destFile.exists()) {
             destFile.mkdir();
         }
@@ -70,8 +73,8 @@ public class SpockReportMojo extends GroovyMojo {
             def entry
             while (entry = result.nextEntry) {
                 if (!entry.isDirectory()) {
-                    new File(destination + File.separator + entry.name).parentFile?.mkdirs()
-                    def output = new FileOutputStream(destination + File.separator
+                    new File(reportDir + File.separator + entry.name).parentFile?.mkdirs()
+                    def output = new FileOutputStream(reportDir + File.separator
                             + entry.name)
                     output.withStream {
                         int len = 0;
@@ -81,7 +84,7 @@ public class SpockReportMojo extends GroovyMojo {
                         }
                     }
                 } else {
-                    new File(destination + File.separator + entry.name).mkdir()
+                    new File(reportDir + File.separator + entry.name).mkdir()
                 }
             }
         }

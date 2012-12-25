@@ -51,16 +51,9 @@
                 <artifactId>spock-enterprise-report-maven-plugin</artifactId>
                 <version>1.0-SNAPSHOT</version>
                 <configuration>
-                    <greeting>what say, you, we go out on the down and swing, baby? Yea</greeting>
+                    <inputDir>target/spock-enterprise-reports</inputDir>
+                    <outputDir>target/spock-enterprise-report</outputDir>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>sayhi</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

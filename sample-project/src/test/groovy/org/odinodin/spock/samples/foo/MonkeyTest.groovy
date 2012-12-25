@@ -5,19 +5,19 @@ import spock.lang.Specification
 class MonkeySpec extends Specification {
 
 
-    def "there are room for 12 monkeys in a list"() {
+    def "there are room for 11 monkeys in a list"() {
 
         given: "an empty list"
         def list = []
 
-        when: "12 monkeys are put in the list"
+        when: "11 monkeys are put in the list"
 
         12.times {
             list << "monkey"
         }
 
         then: "they actually fit in the list"
-        list.size() == 12
+        list.size() == 11
     }
 
 

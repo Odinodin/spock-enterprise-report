@@ -46,46 +46,4 @@ class MathTest extends Specification {
 
     }
 
-
-    @Unroll
-    def "plus actually works"() {
-
-        expect:
-        Plusser.plus(first, second) == result
-
-        where:
-        first | second | result
-        1     | 1      | 2
-        2     | 2      | 4
-        3     | 5      | 10
-
-    }
-
-
-    def "can find Elias in text"() {
-
-        given:
-        def someText = "Blah blah blah"
-        def someTextWithElias = "Lalalallal Elias lalalal"
-
-        println someText
-        println someTextWithElias
-
-        expect:
-        someText.contains("Elias") == false
-        someTextWithElias.contains("Elias") == true
-    }
-
-
-
-}
-
-class Plusser {
-
-
-    static int plus(int a, int b) {
-        return a + b;
-
-    }
-
 }
