@@ -3,11 +3,12 @@ import org.codehaus.groovy.maven.mojo.GroovyMojo
 import java.util.zip.ZipInputStream
 
 /**
- * Says "Hi" to the user... er well not really :-P.
+ * Gathers all spock report files from a test run and gathers them into a single file.
+ * Additionally, unwraps the html report.
  *
- * @goal sayhi
+ * @goal gather-report
  */
-public class GreetingMojo extends GroovyMojo {
+public class SpockReportMojo extends GroovyMojo {
 
     /**
      * Where to unzip the report
@@ -85,6 +86,4 @@ public class GreetingMojo extends GroovyMojo {
             }
         }
     }
-
-
 }

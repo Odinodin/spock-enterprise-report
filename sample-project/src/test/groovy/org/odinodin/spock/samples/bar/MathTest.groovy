@@ -1,6 +1,7 @@
 package org.odinodin.spock.samples.bar
 
 import spock.lang.Specification
+import spock.lang.Unroll
 
 
 class MathTest extends Specification {
@@ -26,7 +27,7 @@ class MathTest extends Specification {
     }
 
 
-    def "with table maximum of two numbers" () {
+    def "with table maximum of two numbers"() {
 
         expect:
         Math.max(a, b) == c
@@ -42,5 +43,49 @@ class MathTest extends Specification {
     def "failing test"() {
         expect: "i fail"
         Math.max(0, 2) == 0
+
     }
+
+
+    @Unroll
+    def "plus actually works"() {
+
+        expect:
+        Plusser.plus(first, second) == result
+
+        where:
+        first | second | result
+        1     | 1      | 2
+        2     | 2      | 4
+        3     | 5      | 10
+
+    }
+
+
+    def "can find Elias in text"() {
+
+        given:
+        def someText = "Blah blah blah"
+        def someTextWithElias = "Lalalallal Elias lalalal"
+
+        println someText
+        println someTextWithElias
+
+        expect:
+        someText.contains("Elias") == false
+        someTextWithElias.contains("Elias") == true
+    }
+
+
+
+}
+
+class Plusser {
+
+
+    static int plus(int a, int b) {
+        return a + b;
+
+    }
+
 }
