@@ -2,7 +2,7 @@ package org.odinodin.spock.samples.foo
 
 import spock.lang.Specification
 
-class MonkeySpec extends Specification {
+class MonkeyTest extends Specification {
 
 
     def "there are room for 11 monkeys in a list"() {

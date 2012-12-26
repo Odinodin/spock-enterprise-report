@@ -35,15 +35,19 @@ public class SpockReportMojo extends GroovyMojo {
         if (!inputSingleReportDir.isDirectory()) throw new RuntimeException("Could not find Spock reports in $inputDir. Make sure to run a report first.")
 
         // Create report-file and copy it to the correct reportDir
-
         def buffer = new StringBuffer()
-
         inputSingleReportDir.eachFile { file ->
-            file.eachLine { line ->
-                if (isLastLine(line) ){
-                    buffer << ","
+
+            def isFirstFile = buffer.length() > 0
+            if (isFirstFile) {
+                buffer << ","
+            }
+
+            file.eachLine { line, idx ->
+                if (idx == 1 || isLastLine(line)) {
+
                 } else {
-                    buffer << line
+                    buffer << line + "\n"
                 }
             }
         }
@@ -53,12 +57,13 @@ public class SpockReportMojo extends GroovyMojo {
 
     private void writeReportFile(def reportString) {
         def report = new File("$reportDir/html/app/js", "data.js")
-        report << "var globalSpecs = $reportString";
+        report << "var globalSpecs = [\n$reportString\n];";
     }
 
     private boolean isLastLine(String line) {
         line == "];"
     }
+
 
 
     private void unzipHtml() {
