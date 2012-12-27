@@ -30,33 +30,11 @@ public class SpockReportMojo extends GroovyMojo {
         gatherReportData()
     }
 
-    void gatherReportData() {
-        def inputSingleReportDir = new File(inputDir)
-        if (!inputSingleReportDir.isDirectory()) throw new RuntimeException("Could not find Spock reports in $inputDir. Make sure to run a report first.")
-
-        // Create report-file and copy it to the correct reportDir
-        def buffer = new StringBuffer()
-        inputSingleReportDir.eachFile { file ->
-
-            def isFirstFile = buffer.length() > 0
-            if (isFirstFile) {
-                buffer << ","
-            }
-
-            file.eachLine { line, idx ->
-                if (idx == 1 || isLastLine(line)) {
-
-                } else {
-                    buffer << line + "\n"
-                }
-            }
-        }
-
-        writeReportFile(buffer.toString());
-    }
-
     private void writeReportFile(def reportString) {
-        def report = new File("$reportDir/html/app/js", "data.js")
+        def reportFolder = "$reportDir/html/app/js"
+        log.info("Writing report data to $reportFolder")
+
+        def report = new File(reportFolder, "data.js")
         report << "var globalSpecs = [\n$reportString\n];";
     }
 
@@ -64,9 +42,8 @@ public class SpockReportMojo extends GroovyMojo {
         line == "];"
     }
 
-
-
     private void unzipHtml() {
+        log.info("Unzipping HTML report")
         InputStream inputStream = getClass().getResourceAsStream("html.zip");
 
         def result = new ZipInputStream(inputStream)
@@ -93,5 +70,31 @@ public class SpockReportMojo extends GroovyMojo {
                 }
             }
         }
+    }
+
+    private void gatherReportData() {
+        log.info("Gathering report data from $inputDir")
+        def inputSingleReportDir = new File(inputDir)
+        if (!inputSingleReportDir.isDirectory()) throw new RuntimeException("Could not find Spock reports in $inputDir. Make sure to run a report first.")
+
+        // Create report-file and copy it to the correct reportDir
+        def buffer = new StringBuffer()
+        inputSingleReportDir.eachFile { file ->
+
+            def isFirstFile = buffer.length() > 0
+            if (isFirstFile) {
+                buffer << ","
+            }
+
+            file.eachLine { line, idx ->
+                if (idx == 1 || isLastLine(line)) {
+
+                } else {
+                    buffer << line + "\n"
+                }
+            }
+        }
+
+        writeReportFile(buffer.toString());
     }
 }

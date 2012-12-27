@@ -5,7 +5,6 @@ import spock.lang.Specification
 
 class SimpleTest extends Specification {
 
-
     def "some simple feature"() {
         given: "some given"
 
@@ -30,14 +29,19 @@ class SimpleTest extends Specification {
         true
     }
 
-
-
     def "failing feature"() {
         expect: false
     }
 
-    def "whatever feature"() {
-        expect: false
+    def "test which have no block comments"() {
+        given:
+        def a = 0
+
+        when:
+        a = 1
+
+        then:
+        a == 1
     }
 
 
